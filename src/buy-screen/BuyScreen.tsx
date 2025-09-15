@@ -11,20 +11,22 @@ import { useState } from 'react';
 import rubIcon from '../assets/rub.png';
 import { STOCK_WORDS } from '../constants';
 import { LS, LSKeys } from '../ls';
-import { StockItem } from '../types';
+import { BotItem, StockItem } from '../types';
 import { sendDataToGA } from '../utils/events';
 import { formatWord } from '../utils/words';
 import { bsSt } from './style.css';
 
 type Props = {
   stockItem: StockItem;
+  bot: BotItem;
   setThx: (v: boolean) => void;
 };
 
-export const BuyScreen = ({ stockItem, setThx }: Props) => {
+export const BuyScreen = ({ stockItem, bot, setThx }: Props) => {
   const [lots, setLots] = useState(0);
   const [showBs, setShowBs] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [botConnected, setBotConnected] = useState(false);
 
   const submit = () => {
     if (lots === 0) {
@@ -33,7 +35,9 @@ export const BuyScreen = ({ stockItem, setThx }: Props) => {
     setLoading(true);
     sendDataToGA({
       sum: stockItem.price_today * lots * stockItem.lot,
-      active: stockItem.ticker,
+      ticker: stockItem.ticker,
+      bot: botConnected ? bot.name : 'none',
+      risk: 'none',
     }).then(() => {
       LS.setItem(LSKeys.ShowThx, true);
       setThx(true);
@@ -105,8 +109,37 @@ export const BuyScreen = ({ stockItem, setThx }: Props) => {
             pattern="[0-9]*"
           />
         </div>
-      </div>
 
+        <div className={bsSt.botContainer}>
+          <div>
+            <Typography.TitleMobile tag="h4" view="xsmall" font="system" weight="semibold">
+              {bot.name}
+            </Typography.TitleMobile>
+            <Typography.Text
+              view="primary-small"
+              tag="p"
+              defaultMargins={false}
+              color={botConnected ? 'positive' : 'secondary'}
+            >
+              {botConnected ? 'Подключено' : bot.description}
+            </Typography.Text>
+          </div>
+
+          <ButtonMobile
+            view="secondary"
+            size={32}
+            onClick={() => {
+              if (!botConnected) {
+                window.gtag('event', '6332_bot_activate', { ticker: stockItem.ticker, var: 'var1', bot: bot.name });
+              }
+              setBotConnected(!botConnected);
+            }}
+          >
+            {botConnected ? 'Отключить' : 'Подключить'}
+          </ButtonMobile>
+        </div>
+      </div>
+      <Gap size={128} />
       <div className={bsSt.bottomBtn}>
         <Typography.Text view="primary-small" color="secondary" tag="p" defaultMargins={false}>
           Итого

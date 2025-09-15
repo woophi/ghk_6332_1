@@ -32,5 +32,4 @@
 .action {
   color: var(--color-light-text-link);
   cursor: pointer;
-  border-bottom: 1px solid currentColor;
 }

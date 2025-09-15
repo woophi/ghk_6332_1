@@ -42,21 +42,11 @@ const bannerImg = style({
   overflow: 'hidden',
 });
 
-const box = style({
-  display: 'flex',
-  padding: '1rem',
-  flexDirection: 'column',
-  borderRadius: '1rem',
-  backgroundColor: '#edeef0',
-  justifyContent: 'space-between',
-});
-
 export const appSt = {
   container,
   topBanner,
   banner,
   rowText,
   bannerImg,
-  box,
   bottomBtn,
 };

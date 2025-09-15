@@ -13,7 +13,7 @@ const bottomBtn = style({
 
 const container = style({
   display: 'flex',
-  padding: '24px',
+  padding: '1rem',
   flexDirection: 'column',
   gap: '1rem',
 });
@@ -63,6 +63,15 @@ const btmContent = style({
   padding: 0,
 });
 
+const botContainer = style({
+  border: '2px solid #F2F3F5',
+  padding: '1rem',
+  borderRadius: '1rem',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '1rem',
+});
+
 export const bsSt = {
   bottomBtn,
   container,
@@ -73,4 +82,5 @@ export const bsSt = {
   rowSmall,
   row,
   btmContent,
+  botContainer,
 };

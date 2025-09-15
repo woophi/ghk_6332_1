@@ -11,3 +11,13 @@ export type StockItem = {
   link: string;
   img: string;
 };
+
+export type BotItem = {
+  name: string;
+  description: string;
+  variant: number;
+  riskLevels: {
+    level: string;
+    profit: string;
+  }[];
+};

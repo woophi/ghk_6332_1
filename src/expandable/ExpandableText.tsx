@@ -27,7 +27,7 @@ export const ExpandableText = ({ className, color, lines = 4, style, view, child
   const fullHeight = useClientHeight(refContainer, DEFAULT_FULL_HEIGHT);
 
   const [open, setOpen] = useState(false);
-  const action = open ? 'Свернуть' : 'Подробнее';
+  const action = open ? 'Свернуть' : 'Развернуть';
   const smallHeight = (view ? LINE_HEIGHTS[view] : DEFAULT_LINE_HEIGHT) * lines;
   const maxHeight = open ? fullHeight : smallHeight;
   const showExpand = smallHeight < fullHeight;

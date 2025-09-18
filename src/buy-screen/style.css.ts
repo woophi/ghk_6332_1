@@ -1,4 +1,5 @@
 import { style } from '@vanilla-extract/css';
+import { recipe } from '@vanilla-extract/recipes';
 
 const bottomBtn = style({
   position: 'fixed',
@@ -63,13 +64,32 @@ const btmContent = style({
   padding: 0,
 });
 
-const botContainer = style({
-  border: '2px solid #F2F3F5',
-  padding: '1rem',
+const botContainer = recipe({
+  base: {
+    border: '2px solid #F2F3F5',
+    padding: '1rem',
+    borderRadius: '1rem',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1rem',
+    transition: 'all .2s ease-in-out',
+  },
+  variants: {
+    connected: {
+      true: {
+        backgroundColor: '#F2F3F5',
+      },
+    },
+  },
+});
+
+const box = style({
+  backgroundColor: '#F5F5F8',
   borderRadius: '1rem',
+  padding: '12px',
   display: 'flex',
   flexDirection: 'column',
-  gap: '1rem',
+  gap: '10px',
 });
 
 export const bsSt = {
@@ -83,4 +103,5 @@ export const bsSt = {
   row,
   btmContent,
   botContainer,
+  box,
 };

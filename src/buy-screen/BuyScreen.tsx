@@ -4,10 +4,12 @@ import { ButtonMobile } from '@alfalab/core-components/button/mobile';
 import { Gap } from '@alfalab/core-components/gap';
 import { SuperEllipse } from '@alfalab/core-components/icon-view/super-ellipse';
 import { NumberInput } from '@alfalab/core-components/number-input';
+import { Status } from '@alfalab/core-components/status';
 import { Typography } from '@alfalab/core-components/typography';
 import { ArrowRightMIcon } from '@alfalab/icons-glyph/ArrowRightMIcon';
 import { InformationCircleLineSIcon } from '@alfalab/icons-glyph/InformationCircleLineSIcon';
-import { useState } from 'react';
+import { InformationCircleSIcon } from '@alfalab/icons-glyph/InformationCircleSIcon';
+import { Fragment, useState } from 'react';
 import rubIcon from '../assets/rub.png';
 import { STOCK_WORDS } from '../constants';
 import { LS, LSKeys } from '../ls';
@@ -27,6 +29,7 @@ export const BuyScreen = ({ stockItem, bot, setThx }: Props) => {
   const [showBs, setShowBs] = useState(false);
   const [loading, setLoading] = useState(false);
   const [botConnected, setBotConnected] = useState(false);
+  const [showBotInfo, setShowBotInfo] = useState(false);
 
   const submit = () => {
     if (lots === 0) {
@@ -110,18 +113,25 @@ export const BuyScreen = ({ stockItem, bot, setThx }: Props) => {
           />
         </div>
 
-        <div className={bsSt.botContainer}>
+        <div className={bsSt.botContainer({ connected: botConnected })}>
+          {botConnected && (
+            <div>
+              <Status view="contrast" color="green" size={20}>
+                <Typography.Text view="secondary-small" weight="bold">
+                  Подключено
+                </Typography.Text>
+              </Status>
+            </div>
+          )}
           <div>
-            <Typography.TitleMobile tag="h4" view="xsmall" font="system" weight="semibold">
-              {bot.name}
-            </Typography.TitleMobile>
-            <Typography.Text
-              view="primary-small"
-              tag="p"
-              defaultMargins={false}
-              color={botConnected ? 'positive' : 'secondary'}
-            >
-              {botConnected ? 'Подключено' : bot.description}
+            <div className={bsSt.row} onClick={() => setShowBotInfo(true)} style={{ cursor: 'pointer' }}>
+              <Typography.TitleMobile tag="h4" view="xsmall" font="system" weight="semibold">
+                {bot.name}
+              </Typography.TitleMobile>
+              <InformationCircleSIcon width={14} height={14} color="#B8B9C0" />
+            </div>
+            <Typography.Text view="primary-small" tag="p" defaultMargins={false} color="secondary">
+              {bot.description}
             </Typography.Text>
           </div>
 
@@ -181,7 +191,7 @@ export const BuyScreen = ({ stockItem, bot, setThx }: Props) => {
         hasCloser
         stickyHeader
       >
-        <div className={bsSt.container} style={{ padding: '1rem' }}>
+        <div className={bsSt.container}>
           <Typography.TitleResponsive style={{ marginTop: '12px' }} font="system" tag="h2" view="xsmall" weight="semibold">
             Покупка
           </Typography.TitleResponsive>
@@ -211,6 +221,79 @@ export const BuyScreen = ({ stockItem, bot, setThx }: Props) => {
           <Typography.Text view="primary-medium" tag="p" defaultMargins={false}>
             Комиссия зависит от вашего тарифа. Подробнее узнать о тарифах вы можете в разделе Инвестиции. Проверить или
             сменить ваш тариф можно в приложении Альфа-Инвестиции: Ещё → Личный кабинет → Тарифы
+          </Typography.Text>
+        </div>
+      </BottomSheet>
+      <BottomSheet
+        open={showBotInfo}
+        onClose={() => {
+          setShowBotInfo(false);
+        }}
+        contentClassName={bsSt.btmContent}
+        title={`Как работает стратегия торгового робота «${bot.name}»`}
+        hasCloser
+        stickyHeader
+        actionButton={
+          <ButtonMobile
+            view="primary"
+            block
+            onClick={() => {
+              setShowBotInfo(false);
+            }}
+          >
+            Понятно
+          </ButtonMobile>
+        }
+      >
+        <div className={bsSt.container}>
+          <Typography.Text view="primary-medium" tag="p" defaultMargins={false}>
+            {bot.text1}
+          </Typography.Text>
+          <Typography.Text view="primary-medium" tag="p" defaultMargins={false} weight="bold">
+            Как это работает
+          </Typography.Text>
+          <Typography.Text view="primary-medium" tag="p" defaultMargins={false}>
+            {bot.text2.split('\n').map((line, index) => (
+              <Fragment key={index}>
+                {line}
+                <br />
+              </Fragment>
+            ))}
+          </Typography.Text>
+          <div className={bsSt.box}>
+            <Typography.Text view="primary-medium" tag="p" defaultMargins={false} weight="bold">
+              Пример
+            </Typography.Text>
+            <Typography.Text view="primary-medium" tag="p" defaultMargins={false}>
+              {bot.text3.split('\n').map((line, index) => (
+                <Fragment key={index}>
+                  {line}
+                  <br />
+                </Fragment>
+              ))}
+            </Typography.Text>
+          </div>
+          <Typography.Text view="primary-medium" tag="p" defaultMargins={false} weight="bold">
+            Метрики
+          </Typography.Text>
+          <Typography.Text view="primary-medium" tag="p" defaultMargins={false}>
+            {bot.text4.split('\n').map((line, index) => (
+              <Fragment key={index}>
+                {line}
+                <br />
+              </Fragment>
+            ))}
+          </Typography.Text>
+          <Typography.Text view="primary-medium" tag="p" defaultMargins={false} weight="bold">
+            Что ещё важно знать
+          </Typography.Text>
+          <Typography.Text view="primary-medium" tag="p" defaultMargins={false}>
+            {bot.text5.split('\n').map((line, index) => (
+              <Fragment key={index}>
+                {line}
+                <br />
+              </Fragment>
+            ))}
           </Typography.Text>
         </div>
       </BottomSheet>
